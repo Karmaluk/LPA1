@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 import pygame.image
 from pygame import Surface, Rect
+from pygame.examples.grid import WINDOW_WIDTH
 from pygame.font import Font
 
-from code.Const import COLOR_PURPLE_DARK
+from code.Const import COLOR_PURPLE_DARK, MENU_OPTION, COLOR_PURPLE_SELECTED, COLOR_PURPLE
 
 
 class Menu:
@@ -14,11 +15,21 @@ class Menu:
         self.rect = self.surf.get_rect()
 
     def run(self):
+        menu_option = 0
         pygame.mixer.music.load('./asset/Menu.wav')
         pygame.mixer.music.play(-1)
         while True:
             self.window.blit(source=self.surf, dest=self.rect)
-            self.menu_text(270, "Dark Forest", text_color=COLOR_PURPLE_DARK, text_center_pos=(500, 120))
+            self.menu_text(270, "Dark Forest", text_color=COLOR_PURPLE,
+                           text_center_pos=(500, 120))
+
+            for i in range(len(MENU_OPTION)):
+                if i == menu_option:
+                    self.menu_text(60, MENU_OPTION[i], COLOR_PURPLE_SELECTED,
+                                   (500, 380 + 50 * i))
+                else:
+                    self.menu_text(40, MENU_OPTION[i], COLOR_PURPLE_DARK,
+                                   (500, 380 + 50 * i))
             pygame.display.flip()
 
             for event in pygame.event.get():
