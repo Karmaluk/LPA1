@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import pygame.image
 from pygame import Surface, Rect
-from pygame.examples.grid import WINDOW_WIDTH
 from pygame.font import Font
 
 from code.Const import COLOR_PURPLE_DARK, MENU_OPTION, COLOR_PURPLE_SELECTED, COLOR_PURPLE
@@ -30,12 +29,26 @@ class Menu:
                 else:
                     self.menu_text(40, MENU_OPTION[i], COLOR_PURPLE_DARK,
                                    (500, 380 + 50 * i))
+
             pygame.display.flip()
 
-            for event in pygame.event.get():
+            for event in pygame.event.get():  # CHECK FOR EVERY EVENT
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
+                    pygame.quit()  # CLOSE WINDOW
+                    quit()  # END PYGAME
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_DOWN:  # DOWN KEY
+                        if menu_option < len(MENU_OPTION) - 1:
+                            menu_option += 1
+                        else:
+                            menu_option = 0
+                    if event.key == pygame.K_UP:  # UP KEY
+                        if menu_option > 0:
+                            menu_option -= 1
+                        else:
+                            menu_option = len(MENU_OPTION) - 1
+                    if event.key == pygame.K_RETURN:  # RETURN KEY PRESSED
+                        return MENU_OPTION[menu_option]
 
     def menu_text(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple):
         text_font: Font = pygame.font.Font('./asset/DarkForestFont.ttf', text_size)
