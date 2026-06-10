@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import sys
+
 import pygame
 
 from code.Entity import Entity
@@ -15,9 +17,14 @@ class Level:
         self.entity_list.extend(EntityFactory.get_entity('Level1Bg'))
 
     def run(self, ):
+        clock = pygame.time.Clock()
         while True:
+            clock.tick(60)
             for entity in self.entity_list:
                 self.window.blit(source=entity.surf, dest=entity.rect)
                 entity.move()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
             pygame.display.flip()
         pass

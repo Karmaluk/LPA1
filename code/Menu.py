@@ -10,7 +10,7 @@ from code.Const import COLOR_PURPLE_DARK, MENU_OPTION, COLOR_PURPLE_SELECTED, CO
 class Menu:
     def __init__(self, window):
         self.window = window
-        self.surf = pygame.image.load('./asset/Menu.png')
+        self.surf = pygame.image.load('./asset/Menu.png').convert_alpha()
         self.rect = self.surf.get_rect()
 
     def run(self):
