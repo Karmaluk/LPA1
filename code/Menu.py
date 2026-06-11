@@ -29,7 +29,6 @@ class Menu:
                 else:
                     self.menu_text(40, MENU_OPTION[i], COLOR_PURPLE_DARK,
                                    (500, 380 + 50 * i))
-
             pygame.display.flip()
 
             for event in pygame.event.get():  # CHECK FOR EVERY EVENT
