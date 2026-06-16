@@ -17,12 +17,12 @@ class Level:
         self.game_mode = game_mode
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Level1Bg'))
-        player = EntityFactory.get_entity('PlayerIdle')
+        self.entity_list.append(EntityFactory.get_entity('Player'))
 
     def run(self):
-        # clock = pygame.time.Clock()
+        clock = pygame.time.Clock()
         while True:
-            # clock.tick(60)
+            clock.tick(30)
             for ent in self.entity_list:
                 self.window.blit(source=ent.surf, dest=ent.rect)
                 ent.move()

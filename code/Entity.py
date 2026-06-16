@@ -3,6 +3,7 @@
 from abc import ABC, abstractmethod
 
 import pygame.image
+from pygame import key
 
 from code.Const import ENTITY_HEALTH, ENTITY_DAMAGE
 

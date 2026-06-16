@@ -18,8 +18,4 @@ class EntityFactory:
                     list_bg.append(Background(f'Level1Bg{i}', (WIN_WIDTH, 0)))
                 return list_bg
             case 'Player':
-                return Player('Player', (10, WIN_HEIGHT / 2 - 30))
-                # list_idle = []
-                # for i in range(1):
-                #     list_idle.append(Background(f'Player_Idle_R{i}', (300, 300)))
-                # return list_idle
+                return Player('Player', (0, 450))
