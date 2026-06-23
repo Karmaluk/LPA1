@@ -4,6 +4,7 @@ from code.Enemy import Enemy
 from code.Background import Background
 from code.Const import WIN_WIDTH, ENTITY_FLOOR
 from code.Player import Player
+from code.PlayerShot import PlayerShot
 
 
 class EntityFactory:
@@ -24,3 +25,7 @@ class EntityFactory:
                 return Enemy('Enemy2', (WIN_WIDTH + 10, ENTITY_FLOOR))
             case 'EnemyBoss':
                 return Enemy('EnemyBoss', (WIN_WIDTH + 10, ENTITY_FLOOR - 65))
+            case 'PlayerShot':
+                return PlayerShot('PlayerShot', position)
+            case 'EnemyShot':
+                return EnemyShot('EnemyShot', position)

@@ -4,29 +4,31 @@ import random
 import sys
 
 import pygame
-from pygame import Rect, Surface
+from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.Const import ENEMY_SPAWN_INTERVAL, BOSS_SPAWN_TIME, COLOR_PURPLE_SELECTED
+from code.Const import (ENEMY_SPAWN_INTERVAL, BOSS_SPAWN_TIME,
+                        WIN_WIDTH, ENTITY_DAMAGE, COLOR_WHITE, COLOR_RED, COLOR_PURPLE_SELECTED)
+from code.Enemy import Enemy
+from code.EnemyShot import EnemyShot
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
 from code.Player import Player
+from code.PlayerShot import PlayerShot
 
 
 class Level:
     def __init__(self, window: Surface, name: str, game_mode: str):
-        self.player = Player('Player', (0, 450))
         self.window = window
         self.game_mode = game_mode
-        self.window = window
         self.name = name
-        self.game_mode = game_mode
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Level1Bg'))
         self.entity_list.append(EntityFactory.get_entity('Player'))
         self.spawn_timer = 0
         self.frame_count = 0
         self.boss_spawned = False
+        self.heart_surf = pygame.image.load('./asset/HeartFull.png').convert_alpha()
 
     def run(self):
         clock = pygame.time.Clock()
@@ -63,6 +65,106 @@ class Level:
                 seconds_left = max(0, (BOSS_SPAWN_TIME - self.frame_count) // 30)
                 self.level_text(25, f'Boss in: {seconds_left}s',
                                 text_color=COLOR_PURPLE_SELECTED, text_pos=(800, 20))
+                # ── update & draw all entities ───────────────────────────
+                shots_to_add: list[Entity] = []
+                for ent in self.entity_list:
+                    self.window.blit(source=ent.surf, dest=ent.rect)
+                    ent.move()
+                    ent.update()
+
+                    # player wants to shoot
+                    if isinstance(ent, Player) and ent.pending_shot:
+                        shot_pos = (ent.rect.right, ent.rect.centery)
+                        shots_to_add.append(EntityFactory.get_entity('PlayerShot', shot_pos))
+
+                    # enemy wants to shoot
+                    if isinstance(ent, Enemy) and ent.pending_shot:
+                        shot_pos = (ent.rect.left, ent.rect.centery)
+                        shots_to_add.append(EntityFactory.get_entity('EnemyShot', shot_pos))
+
+                self.entity_list.extend(shots_to_add)
+
+                # ── collision detection ──────────────────────────────────
+                self._handle_collisions()
+
+                # ── cull dead or off-screen entities ────────────────────
+                self.entity_list = [
+                    ent for ent in self.entity_list
+                    if ent.health > 0 and ent.rect.right > 0 and ent.rect.left < WIN_WIDTH
+                ]
+
+                # ── HUD ──────────────────────────────────────────────────
+                self._draw_hud()
+
+                pygame.display.flip()
+
+    def _handle_collisions(self):
+        players = [e for e in self.entity_list if isinstance(e, Player)]
+        enemies = [e for e in self.entity_list if isinstance(e, Enemy)]
+        player_shots = [e for e in self.entity_list if isinstance(e, PlayerShot)]
+        enemy_shots = [e for e in self.entity_list if isinstance(e, EnemyShot)]
+
+        # PlayerShot hits Enemy
+        for shot in player_shots:
+             for enemy in enemies:
+                if shot.rect.colliderect(enemy.rect):
+                    enemy.health -= ENTITY_DAMAGE['PlayerShot']
+                    shot.health = 0  # destroy shot
+                    break
+
+        # EnemyShot hits Player
+        for shot in enemy_shots:
+            for player in players:
+                if shot.rect.colliderect(player.rect):
+                    player.health -= ENTITY_DAMAGE['EnemyShot']
+                    shot.health = 0
+                    break
+
+        # Enemy collides directly with Player
+        for enemy in enemies:
+            for player in players:
+                if enemy.rect.colliderect(player.rect):
+                    player.health -= ENTITY_DAMAGE[enemy.name]
+                    enemy.health = 0  # enemy dies on contact
+
+    def _draw_hud(self):
+        player = next((e for e in self.entity_list if isinstance(e, Player)), None)
+
+        # ── 3 hearts representing HP ─────────────────────────────────
+        # each heart = 33 HP; full=3 hearts, 67HP=2 hearts, 33HP=1, 0=none
+        if player:
+            max_hearts = 3
+            hearts = max(0, round(player.health / (100 / max_hearts)))
+            for i in range(max_hearts):
+                if i < hearts:
+                    self.window.blit(self.heart_surf, (10 + i * 38, 10))
+                else:
+                    # draw dark/empty heart
+                    empty = self.heart_surf.copy()
+                    empty.set_alpha(60)
+                    self.window.blit(empty, (10 + i * 38, 10))
+
+            # numeric HP under hearts
+            self.level_text(16, f'HP: {max(0, player.health)}', COLOR_WHITE, (10, 48))
+
+        # ── boss countdown or warning ────────────────────────────────
+        if not self.boss_spawned:
+            seconds_left = max(0, (BOSS_SPAWN_TIME - self.frame_count) // 30)
+            self.level_text(18, f'Boss in: {seconds_left}s', COLOR_WHITE,(WIN_WIDTH - 160, 10))
+        else:
+            self.level_text(18, '⚠ BOSS', COLOR_RED, (WIN_WIDTH - 160, 10))
+
+            # boss health bar
+            boss = next((e for e in self.entity_list if isinstance(e, Enemy)
+                         and 'Boss' in e.name), None)
+            if boss:
+                bar_x, bar_y, bar_w, bar_h = WIN_WIDTH // 4, 20, WIN_WIDTH // 2, 16
+                ratio = max(0, boss.health / 200)
+                pygame.draw.rect(self.window, (80, 0, 0), (bar_x, bar_y, bar_w, bar_h))
+                pygame.draw.rect(self.window, COLOR_RED, (bar_x, bar_y, int(bar_w * ratio), bar_h))
+                pygame.draw.rect(self.window, COLOR_WHITE, (bar_x, bar_y, bar_w, bar_h), 2)
+                self.level_text(14, 'BOSS', COLOR_WHITE, (bar_x + bar_w // 2 - 16, bar_y - 18))
+
             pygame.display.flip()
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):

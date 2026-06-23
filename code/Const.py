@@ -5,20 +5,26 @@ BOSS_SPAWN_TIME = 1000
 COLOR_PURPLE = 130, 14, 199
 COLOR_PURPLE_DARK = 47, 18, 64
 COLOR_PURPLE_SELECTED = 140, 66, 184
+COLOR_WHITE = (255, 255, 255)
+COLOR_RED = (255, 0, 0)
 
 # E
 ENTITY_DAMAGE = {
-    'Player': 1,
+    'Player': 0,
     'PlayerShot': 25,
-    'Enemy': 5,
+    'Enemy1': 10,
+    'Enemy2': 15,
+    'EnemyBoss': 30,
     'EnemyShot': 10
 }
 
 ENTITY_HEALTH = {
     'Player': 100,
     'PlayerShot': 1,
-    'Enemy': 5,
-    'EnemyShot': 10
+    'Enemy1': 30,
+    'Enemy2': 20,
+    'EnemyBoss': 200,
+    'EnemyShot': 1
 }
 
 ENTITY_SPEED = {
@@ -31,9 +37,11 @@ ENTITY_SPEED = {
     'Level1Bg6': 0,
     'Level1Bg7': 0,
     'Player': 5,
-    'Enemy1': 2,
-    'Enemy2': 3,
-    'EnemyBoss': 1
+    'PlayerShot': 8,
+    'Enemy1': 3,
+    'Enemy2': 5,
+    'EnemyBoss': 2,
+    'EnemyShot': 4,
 }
 
 ENTITY_FLOOR = 400
@@ -46,17 +54,10 @@ MENU_OPTION = ('PLAY',
                'QUIT')
 
 
+# P
+PLAYER_SHOT_COOLDOWN = 15
+
 # W
 WIN_WIDTH = 960
 WIN_HEIGHT = 540
 
-
-
-
-
-def ENTITY_DAMAGE():
-    return None
-
-
-def ENTITY_HEALTH():
-    return None

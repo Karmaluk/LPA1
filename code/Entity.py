@@ -6,6 +6,8 @@ from abc import ABC, abstractmethod
 
 import pygame.image
 
+from code.Const import ENTITY_HEALTH
+
 
 class Entity(ABC):
     def __init__(self, name: str, position: tuple):
@@ -17,8 +19,7 @@ class Entity(ABC):
         self.gravity = 1
         self.jump_power = -15
         self.is_on_ground = True
-        # self.damage = ENTITY_DAMAGE[self.name]
-        # self.last_dmg = 'None'
+        self.health = ENTITY_HEALTH.get(name, 100)
 
     @abstractmethod
     def move(self):
