@@ -6,12 +6,17 @@ import pygame
 from pygame import Rect, Surface
 from pygame.font import Font
 
+from code.Const import ENTITY_FLOOR
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
+from code.Player import Player
 
 
 class Level:
     def __init__(self, window: Surface, name: str, game_mode: str):
+        self.player = Player('Player', (0, 450))
+        self.window = window
+        self.game_mode = game_mode
         self.window = window
         self.name = name
         self.game_mode = game_mode
@@ -23,12 +28,13 @@ class Level:
         clock = pygame.time.Clock()
         while True:
             clock.tick(30)
-            for ent in self.entity_list:
-                self.window.blit(source=ent.surf, dest=ent.rect)
-                ent.move()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+            for ent in self.entity_list:
+                self.window.blit(source=ent.surf, dest=ent.rect)
+                ent.move()
+                ent.update()
             pygame.display.flip()
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):

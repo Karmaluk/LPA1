@@ -30,14 +30,20 @@ ENTITY_SPEED = {
     'Player': 5
 }
 
+ENTITY_FLOOR = 400
+
 # M
 MENU_OPTION = ('PLAY',
                'ABOUT',
                'QUIT')
 
+
 # W
 WIN_WIDTH = 960
 WIN_HEIGHT = 540
+
+
+
 
 
 def ENTITY_DAMAGE():

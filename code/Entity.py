@@ -1,11 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import pygame
+
 from abc import ABC, abstractmethod
 
 import pygame.image
-from pygame import key
-
-from code.Const import ENTITY_HEALTH, ENTITY_DAMAGE
 
 
 class Entity(ABC):
@@ -14,9 +13,16 @@ class Entity(ABC):
         self.surf = pygame.image.load('./asset/' + name + '.png').convert_alpha()
         self.rect = self.surf.get_rect(left=position[0], top=position[1])
         self.speed = 0
+        self.velocity_y = 0
+        self.gravity = 1
+        self.jump_power = -15
+        self.is_on_ground = True
         # self.damage = ENTITY_DAMAGE[self.name]
         # self.last_dmg = 'None'
 
     @abstractmethod
     def move(self):
+        pass
+
+    def update(self):
         pass

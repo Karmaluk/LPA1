@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from code.Background import Background
-from code.Const import WIN_WIDTH, WIN_HEIGHT
+from code.Const import WIN_WIDTH, WIN_HEIGHT, ENTITY_FLOOR
 from code.Player import Player
 
 
@@ -13,9 +13,8 @@ class EntityFactory:
         match entity_name:
             case 'Level1Bg':
                 list_bg = []
-                for i in range(8):
+                for i in range(7):
                     list_bg.append(Background(f'Level1Bg{i}', (0, 0)))
-                    list_bg.append(Background(f'Level1Bg{i}', (WIN_WIDTH, 0)))
                 return list_bg
             case 'Player':
-                return Player('Player', (0, 450))
+                return Player('Player', (0, ENTITY_FLOOR))
