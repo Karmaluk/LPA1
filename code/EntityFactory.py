@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+from code.Enemy import Enemy
 from code.Background import Background
-from code.Const import WIN_WIDTH, WIN_HEIGHT, ENTITY_FLOOR
+from code.Const import WIN_WIDTH, ENTITY_FLOOR
 from code.Player import Player
 
 
@@ -18,3 +18,9 @@ class EntityFactory:
                 return list_bg
             case 'Player':
                 return Player('Player', (0, ENTITY_FLOOR))
+            case 'Enemy1':
+                return Enemy('Enemy1', (WIN_WIDTH + 10, ENTITY_FLOOR))
+            case 'Enemy2':
+                return Enemy('Enemy2', (WIN_WIDTH + 10, ENTITY_FLOOR))
+            case 'EnemyBoss':
+                return Enemy('EnemyBoss', (WIN_WIDTH + 10, ENTITY_FLOOR - 65))

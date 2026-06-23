@@ -1,3 +1,6 @@
+# B
+BOSS_SPAWN_TIME = 1000
+
 # C
 COLOR_PURPLE = 130, 14, 199
 COLOR_PURPLE_DARK = 47, 18, 64
@@ -27,10 +30,15 @@ ENTITY_SPEED = {
     'Level1Bg5': 0,
     'Level1Bg6': 0,
     'Level1Bg7': 0,
-    'Player': 5
+    'Player': 5,
+    'Enemy1': 2,
+    'Enemy2': 3,
+    'EnemyBoss': 1
 }
 
 ENTITY_FLOOR = 400
+
+ENEMY_SPAWN_INTERVAL = 80
 
 # M
 MENU_OPTION = ('PLAY',

@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import pygame.key
-from pygame import event
 
 from code.Const import ENTITY_SPEED, WIN_WIDTH, ENTITY_FLOOR
 from code.Entity import Entity
 
 
 class Player(Entity):
-    def __init__(self, name: str, position: tuple) -> None:
+    def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
 
     def move(self):
