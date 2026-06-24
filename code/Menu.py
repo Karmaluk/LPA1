@@ -4,7 +4,7 @@ import pygame.image
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.Const import COLOR_PURPLE_DARK, MENU_OPTION, COLOR_PURPLE_SELECTED, COLOR_PURPLE
+from code.Const import COLOR_PURPLE_DARK, MENU_OPTION, COLOR_PURPLE_SELECTED, COLOR_PURPLE, COLOR_BLACK
 
 
 class Menu:
@@ -21,6 +21,8 @@ class Menu:
             self.window.blit(source=self.surf, dest=self.rect)
             self.menu_text(270, "Dark Forest", text_color=COLOR_PURPLE,
                            text_center_pos=(500, 120))
+            self.menu_text(30, 'Arrow keys to move  |  UP to jump', COLOR_BLACK, (180, 470))
+            self.menu_text(30, 'SPACE to shoot  |  ENTER to select', COLOR_BLACK, (180, 500))
 
             for i in range(len(MENU_OPTION)):
                 if i == menu_option:

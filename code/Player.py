@@ -27,7 +27,7 @@ class Player(Entity):
             self.shoot_cooldown -= 1
         if pressed_keys[pygame.K_SPACE] and self.shoot_cooldown == 0:
             self.pending_shot = True
-            self.is_on_ground = PLAYER_SHOT_COOLDOWN
+            self.shoot_cooldown = PLAYER_SHOT_COOLDOWN
 
     def update(self):
         if not self.is_on_ground:

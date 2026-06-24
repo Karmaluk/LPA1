@@ -3,6 +3,7 @@
 from code.Enemy import Enemy
 from code.Background import Background
 from code.Const import WIN_WIDTH, ENTITY_FLOOR
+from code.EnemyShot import EnemyShot
 from code.Player import Player
 from code.PlayerShot import PlayerShot
 

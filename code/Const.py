@@ -7,6 +7,8 @@ COLOR_PURPLE_DARK = 47, 18, 64
 COLOR_PURPLE_SELECTED = 140, 66, 184
 COLOR_WHITE = (255, 255, 255)
 COLOR_RED = (255, 0, 0)
+COLOR_GREEN = (0, 255, 0)
+COLOR_BLACK = (0, 0, 0)
 
 # E
 ENTITY_DAMAGE = {
@@ -21,9 +23,9 @@ ENTITY_DAMAGE = {
 ENTITY_HEALTH = {
     'Player': 100,
     'PlayerShot': 1,
-    'Enemy1': 30,
+    'Enemy1': 20,
     'Enemy2': 20,
-    'EnemyBoss': 200,
+    'EnemyBoss': 100,
     'EnemyShot': 1
 }
 
@@ -55,7 +57,7 @@ MENU_OPTION = ('PLAY',
 
 
 # P
-PLAYER_SHOT_COOLDOWN = 15
+PLAYER_SHOT_COOLDOWN = 10
 
 # W
 WIN_WIDTH = 960
