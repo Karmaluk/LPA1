@@ -2,7 +2,7 @@ name: Build Windows EXE
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:    # lets you trigger it manually from GitHub
 
 jobs:
@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v3
         with:
           python-version: '3.11'
 
@@ -27,7 +27,7 @@ jobs:
           pyinstaller --onefile --windowed --add-data "asset;asset" --name "DarkForest" main.py
 
       - name: Upload EXE artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: DarkForest-Windows
-          path: dist/DarkForest.exe
+          path: dist/DarkForestV1.exe
