@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 from pygame import Surface
-from code.Const import COLOR_WHITE, COLOR_PURPLE, COLOR_PURPLE_DARK, COLOR_PURPLE_SELECTED, WIN_WIDTH
+from code.Const import COLOR_PURPLE, COLOR_PURPLE_SELECTED, WIN_WIDTH
 
 
 class About:

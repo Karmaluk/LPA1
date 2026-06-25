@@ -9,7 +9,7 @@ class EnemyShot(Entity):
         super().__init__(name, position)
 
     def move(self):
-        self.rect.x -= ENTITY_SPEED[self.name]     # travels left toward player
+        self.rect.x -= ENTITY_SPEED[self.name]
 
     def update(self):
         pass

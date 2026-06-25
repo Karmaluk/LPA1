@@ -31,9 +31,9 @@ class Player(Entity):
 
     def update(self):
         if not self.is_on_ground:
-            self.velocity_y += self.gravity  # gravity pulls down each frame
-            self.rect.y += self.velocity_y  # apply velocity to position
-            if self.rect.y >= ENTITY_FLOOR:  # hit the floor?
+            self.velocity_y += self.gravity
+            self.rect.y += self.velocity_y
+            if self.rect.y >= ENTITY_FLOOR:
                 self.rect.y = ENTITY_FLOOR
                 self.velocity_y = 0
                 self.is_on_ground = True

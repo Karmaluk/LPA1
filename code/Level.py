@@ -53,44 +53,36 @@ class Level:
                     enemy_type = random.choice(['Enemy1', 'Enemy2'])
                     self.entity_list.append(EntityFactory.get_entity(enemy_type))
                     self.spawn_timer = 0
-            # ── update & draw all entities ───────────────────────────
             shots_to_add: list[Entity] = []
             for ent in self.entity_list:
                 self.window.blit(source=ent.surf, dest=ent.rect)
                 ent.move()
                 ent.update()
 
-                # player wants to shoot
                 if isinstance(ent, Player) and ent.pending_shot:
                     shot_pos = (ent.rect.right, ent.rect.centery)
                     shots_to_add.append(EntityFactory.get_entity('PlayerShot', shot_pos))
 
-                # enemy wants to shoot
                 if isinstance(ent, Enemy) and ent.pending_shot:
                     shot_pos = (ent.rect.left, ent.rect.centery)
                     shots_to_add.append(EntityFactory.get_entity('EnemyShot', shot_pos))
 
             self.entity_list.extend(shots_to_add)
 
-            # ── collision detection ──────────────────────────────────
             self._handle_collisions()
 
-            # ── cull dead or off-screen entities ────────────────────
             self.entity_list = [
                 ent for ent in self.entity_list
                 if ent.health > 0 and ent.rect.right > 0
             ]
 
-            # ── HUD ──────────────────────────────────────────────────
             self._draw_hud()
 
-            # ── check game over ───────────────────────────────────────
             player = next((e for e in self.entity_list if isinstance(e, Player)), None)
             if player is None or player.health <= 0:
                 pygame.mixer.music.stop()
                 return 'game_over'
 
-            # ── check victory (boss defeated) ─────────────────────────
             if self.boss_spawned:
                 boss = next((e for e in self.entity_list
                              if isinstance(e, Enemy) and 'Boss' in e.name), None)
@@ -106,15 +98,13 @@ class Level:
         player_shots = [e for e in self.entity_list if isinstance(e, PlayerShot)]
         enemy_shots = [e for e in self.entity_list if isinstance(e, EnemyShot)]
 
-        # PlayerShot hits Enemy
         for shot in player_shots:
             for enemy in enemies:
                 if shot.rect.colliderect(enemy.rect):
                     enemy.health -= ENTITY_DAMAGE['PlayerShot']
-                    shot.health = 0  # destroy shot
+                    shot.health = 0
                     break
 
-        # EnemyShot hits Player
         for shot in enemy_shots:
             for player in players:
                 if shot.rect.colliderect(player.rect):
@@ -122,18 +112,15 @@ class Level:
                     shot.health = 0
                     break
 
-        # Enemy collides directly with Player
         for enemy in enemies:
             for player in players:
                 if enemy.rect.colliderect(player.rect):
                     player.health -= ENTITY_DAMAGE[enemy.name]
-                    enemy.health = 0  # enemy dies on contact
+                    enemy.health = 0
 
     def _draw_hud(self):
         player = next((e for e in self.entity_list if isinstance(e, Player)), None)
 
-        # ── 3 hearts representing HP ─────────────────────────────────
-        # each heart = 33 HP; full=3 hearts, 67HP=2 hearts, 33HP=1, 0=none
         if player:
             max_hearts = 3
             hearts = max(0, round(player.health / (100 / max_hearts)))
@@ -141,20 +128,16 @@ class Level:
                 if i < hearts:
                     self.window.blit(self.heart_surf, (10 + i * 38, 10))
                 else:
-                    # draw dark/empty heart
                     empty = self.heart_surf.copy()
                     empty.set_alpha(60)
                     self.window.blit(empty, (10 + i * 38, 10))
 
-            # numeric HP under hearts
             self.level_text(20, f'HP: {max(0, player.health)}', COLOR_PURPLE_SELECTED, (10, 40))
 
-        # ── boss countdown or warning ────────────────────────────────
         if not self.boss_spawned:
             seconds_left = max(0, (BOSS_SPAWN_TIME - self.frame_count) // 30)
             self.level_text(20, f'Boss in: {seconds_left}s', COLOR_PURPLE_SELECTED, (WIN_WIDTH - 160, 10))
         else:
-        #     self.level_text(18, 'BOSS', COLOR_PURPLE_SELECTED, (WIN_WIDTH - 160, 10))
 
             boss = next((e for e in self.entity_list if isinstance(e, Enemy)
                          and 'Boss' in e.name), None)
