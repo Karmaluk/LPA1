@@ -27,7 +27,7 @@ jobs:
           pyinstaller --onefile --windowed --add-data "asset;asset" --name "DarkForest" main.py
 
       - name: Upload EXE artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: DarkForest-Windows
           path: dist/DarkForestV1.exe
